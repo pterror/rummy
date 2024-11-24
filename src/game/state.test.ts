@@ -44,10 +44,12 @@ test("createInitialState", () => {
     ],
     player1Hand: ["4H", "9S", "QH", "TS", "7H", "5D", "AD"],
     player2Hand: ["8H", "3C", "9C", "4S", "7S", "5H", "QC"],
-    player1Melds: [],
-    player2Melds: [],
+    melds: [],
     discard: ["8D"],
+    player1First: true,
     player1Turn: true,
     phase: GamePhase.DRAW,
+    player1Score: 0,
+    player2Score: 0,
   });
 });

@@ -43,3 +43,20 @@ export const numberToRank = (num: number): Rank => {
   }
   return RANKS[num - 1];
 };
+
+export const cardValue = (card: Card): number => {
+  switch (cardRank(card)) {
+    case "T":
+    case "J":
+    case "Q":
+    case "K":
+      return 10;
+    case "A":
+      return 15;
+    default:
+      return 5;
+  }
+};
+
+export const cardsScore = (cards: Card[]): number =>
+  cards.reduce((total, card) => total + cardValue(card), 0);
