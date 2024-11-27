@@ -1,0 +1,13 @@
+.hand {
+    display: flex;
+    justify-self: center;
+}
+
+.card img {
+    touch-action: none;
+    width: 10vw;
+}
+
+.card.selected {
+    transform: translateY(-50px);
+}

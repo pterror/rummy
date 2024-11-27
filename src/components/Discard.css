@@ -1,0 +1,11 @@
+.discard {
+    position: relative;
+}
+
+.discard-card {
+    position: absolute;   
+}
+
+.discard-card img {
+    width: 120px;
+}

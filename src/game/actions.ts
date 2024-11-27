@@ -28,7 +28,15 @@ export const actionMeld = (args: { cards: Card[]; existingMeld?: Meld }) => ({
 export type MeldActionType = ReturnType<typeof actionMeld>;
 
 export const GO_OUT_ACTION = "GO_OUT" as const;
-export const actionGoOut = () => ({
+export const actionGoOut = (args?: { seed: number }) => ({
   action: GO_OUT_ACTION,
+  args,
 });
 export type GoOutActionType = ReturnType<typeof actionGoOut>;
+
+export type GameAction =
+  | DrawActionType
+  | PickupActionType
+  | DiscardActionType
+  | MeldActionType
+  | GoOutActionType;

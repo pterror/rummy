@@ -5,7 +5,13 @@ import { produce } from "immer";
 export const enum GamePhase {
   DRAW,
   PLAY,
+  COMPLETE,
 }
+
+export const EMPTY_MELD: Meld = {
+  player1Cards: [],
+  player2Cards: [],
+};
 
 export type State = {
   deck: Card[];
@@ -25,13 +31,14 @@ export const createInitialState = (seed?: number): State => {
   const engine =
     seed !== undefined
       ? MersenneTwister19937.seed(seed)
-      : MersenneTwister19937.autoSeed();
+      : /* v8 ignore next */
+        MersenneTwister19937.autoSeed();
 
   const deck = [...REAL_CARDS];
   shuffle(engine, deck);
 
-  const player1Hand = deck.splice(0, 7);
-  const player2Hand = deck.splice(0, 7);
+  const player1Hand = deck.splice(0, 9);
+  const player2Hand = deck.splice(0, 9);
   const discard = deck.splice(0, 1);
 
   return {
@@ -52,13 +59,14 @@ export const newRoundState = (state: State, seed?: number): State => {
   const engine =
     seed !== undefined
       ? MersenneTwister19937.seed(seed)
-      : MersenneTwister19937.autoSeed();
+      : /* v8 ignore next */
+        MersenneTwister19937.autoSeed();
 
   const deck = [...REAL_CARDS];
   shuffle(engine, deck);
 
-  const player1Hand = deck.splice(0, 7);
-  const player2Hand = deck.splice(0, 7);
+  const player1Hand = deck.splice(0, 9);
+  const player2Hand = deck.splice(0, 9);
   const discard = deck.splice(0, 1);
 
   return produce(state, (newState) => {

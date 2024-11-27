@@ -4,10 +4,6 @@ import { GamePhase, State, createInitialState } from "./state";
 test("createInitialState", () => {
   expect(createInitialState(0)).toEqual<State>({
     deck: [
-      "6S",
-      "8C",
-      "2D",
-      "KH",
       "AS",
       "TC",
       "9D",
@@ -42,10 +38,10 @@ test("createInitialState", () => {
       "2C",
       "6H",
     ],
-    player1Hand: ["4H", "9S", "QH", "TS", "7H", "5D", "AD"],
-    player2Hand: ["8H", "3C", "9C", "4S", "7S", "5H", "QC"],
+    player1Hand: ["4H", "9S", "QH", "TS", "7H", "5D", "AD", "8H", "3C"],
+    player2Hand: ["9C", "4S", "7S", "5H", "QC", "8D", "6S", "8C", "2D"],
     melds: [],
-    discard: ["8D"],
+    discard: ["KH"],
     player1First: true,
     player1Turn: true,
     phase: GamePhase.DRAW,
