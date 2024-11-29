@@ -49,7 +49,12 @@ export const Game: React.FC<GameProps> = ({ isPlayer1 }) => {
           <Deck numCards={state.deck.length} />
           <Discard cards={state.discard} />
         </div>
-        <Hand cards={isPlayer1 ? state.player1Hand : state.player2Hand} />
+        <Hand
+          cards={isPlayer1 ? state.player1Hand : state.player2Hand}
+          melds={state.melds}
+          isPlayer1={isPlayer1}
+          isInDiscardPhase={isPlayer1 ? state.player1Turn : !state.player1Turn}
+        />
       </div>
     </GameStateContext.Provider>
   );

@@ -14,19 +14,36 @@ import {
 } from "@dnd-kit/sortable";
 import React, { useCallback } from "react";
 import { useImmer } from "use-immer";
-import { Card } from "../cards";
+import { Card, Meld } from "../cards";
 import { CardComponent } from "./Card";
 import "./Hand.css";
 import { SortableItem } from "./SortableItem";
 import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
+import { canMeldWithCard, isValidMeld } from "../game/validation";
 
 export type HandProps = {
   cards: Card[];
+  melds: Meld[];
+  isPlayer1: boolean;
+  isInDiscardPhase: boolean;
 };
 
-export const Hand: React.FC<HandProps> = ({ cards }) => {
+export const Hand: React.FC<HandProps> = ({
+  cards,
+  melds,
+  isPlayer1,
+  isInDiscardPhase,
+}) => {
   const [sortedCards, updateSortedCards] = useImmer(cards);
   const [selectedCards, updateSelectedCards] = useImmer(new Set<Card>());
+  const [firstCard] = selectedCards;
+  const canMeld =
+    isValidMeld({
+      player1Cards: isPlayer1 ? [...selectedCards] : [],
+      player2Cards: isPlayer1 ? [] : [...selectedCards],
+    }) ||
+    (selectedCards.size === 1 && canMeldWithCard(cards, firstCard, melds));
+  const canDiscard = isInDiscardPhase;
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -66,28 +83,36 @@ export const Hand: React.FC<HandProps> = ({ cards }) => {
   );
 
   return (
-    <div className="hand">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-        modifiers={[restrictToHorizontalAxis]}
-      >
-        <SortableContext
-          items={sortedCards}
-          strategy={horizontalListSortingStrategy}
+    <div className="hand-container">
+      <div className="hand-buttons">
+        <button disabled={!canMeld}>Meld</button>
+        <button disabled={!canDiscard}>Discard</button>
+      </div>
+      <div className="hand">
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          modifiers={[restrictToHorizontalAxis]}
         >
-          {sortedCards.map((card) => (
-            <SortableItem key={card} id={card}>
-              <div
-                className={`card ${selectedCards.has(card) ? "selected" : ""}`}
-              >
-                <CardComponent card={card} key={card} onClick={handleClick} />
-              </div>
-            </SortableItem>
-          ))}
-        </SortableContext>
-      </DndContext>
+          <SortableContext
+            items={sortedCards}
+            strategy={horizontalListSortingStrategy}
+          >
+            {sortedCards.map((card) => (
+              <SortableItem key={card} id={card}>
+                <div
+                  className={`card ${
+                    selectedCards.has(card) ? "selected" : ""
+                  }`}
+                >
+                  <CardComponent card={card} key={card} onClick={handleClick} />
+                </div>
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
     </div>
   );
 };

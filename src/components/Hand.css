@@ -1,3 +1,15 @@
+.hand-container {
+  display: flex;
+  flex-flow: column;
+  gap: calc(0.5em + 50px);
+}
+
+.hand-buttons {
+  display: flex;
+  align-self: center;
+  gap: 0.5em;
+}
+
 .hand {
   display: flex;
   justify-self: center;
