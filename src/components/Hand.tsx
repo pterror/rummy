@@ -26,7 +26,7 @@ export type HandProps = {
 
 export const Hand: React.FC<HandProps> = ({ cards }) => {
   const [sortedCards, updateSortedCards] = useImmer(cards);
-  const [selectedCards, updateSelectedCards] = useImmer<Set<Card>>(new Set());
+  const [selectedCards, updateSelectedCards] = useImmer(new Set<Card>());
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
